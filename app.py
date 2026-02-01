@@ -1,11 +1,16 @@
 import os
-from flask import Flask
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def hello():
-    return 'Hello World, Flask Application!!'
+    message = None
+    if request.method == 'POST':
+        user_input = request.form.get('user_input', '')
+        if user_input:
+            message = f'{user_input} Hello World!!'
+    return render_template('index.html', message=message)
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8080))
